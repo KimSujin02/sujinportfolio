@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="utf-8">
+    <title>시간표</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" sizes="180x180" href="image/hotlogo.png" />
+    <link rel="icon" type="image/png" href="image/hotlogo.png" sizes="192x192"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script type="text/javascript">   
+        $(document).ready( function() {
+        $("#headers").load("header.html");
+            });
+    </script>
+  </head>
+<body>
+    <div id="headers"></div>
+    <div class="container">
+        <br>
+        <h5>시간표</h5>
+        <div class="card">
+            <div class="card-body">
+                <table  class="table table-bordered table-sm">
+                    <thead>
+                        <tr align=center >
+                            <th>#</th>
+                            <th>월</th>
+                            <th>화</th>
+                            <th>수</th>
+                            <th>목</th>
+                            <th>금</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1<br>9:10~9:50</td>
+                            <td class="center">node.js</td>
+                            <td rowspan=2 class="center">node.js</td>
+                            <td rowspan=2 class="center">UI</td>
+                            <td rowspan=2 class="center">Django</td>
+                            <td rowspan=2 class="center">사무관리</td>
+                        </tr>
+                        <tr>
+                            <td>2<br>10:00~10:40</td>
+                            <td class="center">영어</td>
+                        </tr>
+                        <tr>
+                            <td>3<br>10:50~11:30</td>
+                            <td rowspan=2 class="center">DBP</td>
+                            <td rowspan=2 class="center">네트워크</td>
+                            <td rowspan=2 class="center">DBP</td>
+                            <td rowspan=2 class="center">node.js</td>
+                            <td class="center">운동</td>
+                        </tr>
+                        <tr>
+                            <td>4<br>11:40~12:20</td>
+                            <td>국어</td>
+                        </tr>
+                        <tr>
+                            <td>5<br>13:30~14:10</td>
+                            <td rowspan=2 class="center">UI</td>
+                            <td class="center">DBP</td>
+                            <td class="center">진로</td>
+                            <td class="center">영어</td>
+                            <td class="center">영어</td>
+                        </tr>
+                        <tr>
+                            <td>6<br>14:20~15:00</td>
+                            <td class="center">영어</td>
+                            <td rowspan=2 class="center">창체</td>
+                            <td rowspan=2 class="center">네트워크</td>
+                            <td rowspan=2 class="center">Django</td>
+                        </tr>
+                        <tr>
+                            <td>7<br>15:10~15:50</td>
+                            <td class="center">국어</td>
+                            <td class="center">진로</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div><br>
+    </div><br><br>
+    <footer class="py-4 bg-light mt-auto">
+      <div class="container-fluid">
+        <div class="d-flex align-items-center justify-content-between small">
+          <div class="text-muted">Copyright &copy; Sujin's Portfolio</div>
+          <div>email : <a href="mailto:selina9135@gmail.com">selina9135@gmail.com</a> &middot; <a href="https://github.com/KimSujin02">github</a></div>
+        </div>
+      </div>
+    </footer>
+</body>
+</html>
