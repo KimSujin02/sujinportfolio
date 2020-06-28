@@ -58,7 +58,7 @@ app.use(cors());
 // 파일 제한 : 10개, 1G
 var storage = multer.diskStorage({
     destination: function (req, file, callback) {
-        callback(null, 'uploads')
+        callback(null, './uploads')
     },
     filename: function (req, file, callback) {
         /*callback(null, file.originalname + Date.now())*/
