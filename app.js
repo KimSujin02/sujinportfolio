@@ -126,7 +126,6 @@ router.route('/process/photo').post(upload.array('photo', 10), function(req, res
 							+ mimetype + ', ' + size);
 					
 							// 클라이언트에 응답 전송
-							res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
 							res.write('<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">');
 							res.write('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">');
 							res.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>');
@@ -139,9 +138,10 @@ router.route('/process/photo').post(upload.array('photo', 10), function(req, res
 							res.write('<p>원본 파일명 : ' + originalname + '<br> -> 저장 파일명 : ' + filename + '</p>');
 							res.write('<p>MIME TYPE : ' + mimetype + '</p>');
 							res.write('<p>파일 크기 : ' + size + '</p>');
-							res.write('<a href=/ class="btn btn-primary btn-sm" value= "Home">홈 화면으로 이동</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
-							res.end();
 						}
+						res.write('<a href=/ class="btn btn-primary btn-sm" value= "Home">홈 화면으로 이동</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+						res.write('</dir>');
+						res.end();
 
 			}
 	} catch(err) {
