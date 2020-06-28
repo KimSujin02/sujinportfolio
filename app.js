@@ -41,7 +41,6 @@ app.use(bodyParser.json())
 app.use('/', static(path.join(__dirname, 'public')));
 app.use('/', static(path.join(__dirname, 'uploads')));
 
-
 // cookie-parser 설정
 app.use(cookieParser());
 
@@ -57,13 +56,15 @@ app.use(expressSession({
 app.use(cors());
 
 
-//multer 미들웨어
+//multer 미들웨어 사용 : 미들웨어 사용 순서 중요  body-parser -> multer -> router
 // 파일 제한 : 10개, 1G
 var storage = multer.diskStorage({
     destination: function (req, file, callback) {
         callback(null, 'uploads')
     },
     filename: function (req, file, callback) {
+        /*callback(null, file.originalname + Date.now())*/
+		//callback(null, file.originalname)
 		var extension = path.extname(file.originalname);
 		var basename = path.basename(file.originalname, extension);
 		callback(null, basename + Date.now() + extension);
@@ -77,6 +78,7 @@ var upload = multer({
 		fileSize: 1024 * 1024 * 1024
 	}
 });
+
 
 // 라우터 사용하여 라우팅 함수 등록
 var router = express.Router();
@@ -98,73 +100,59 @@ router.route('/process/login').post(function(req, res) {
 	res.end();
 });
 
-// 파일 업로드 함수
+// 파일 업로드 라우팅 함수 - 로그인 후 세션 저장함
 router.route('/process/photo').post(upload.array('photo', 10), function(req, res) {
-	console.log('/process/photo 호출');
-	
+	console.log('/process/photo 호출됨.');
+	res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
 	try {
 		var files = req.files;
-
-		//파일 정보 저장 변수 선언
+      
+		// 현재의 파일 정보를 저장할 변수 선언
 		var originalname = '',
 			filename = '',
 			mimetype = '',
 			size = 0;
 		
-		if (Array.isArray(files)) {
-	        console.log("파일 갯수 : %d", files.length);
-			
-			
-	        for (var index = 0; index < files.length; index++) {
-	        	originalname = files[index].originalname;
-	        	filename = files[index].filename;
-	        	mimetype = files[index].mimetype;
-				size = files[index].size;
-				console.dir('업로드 파일 정보')
-				console.dir(req.files[index]);
-				console.log('현재 파일 정보 : ' + originalname + ', ' + filename + ', '
-				+ mimetype + ', ' + size);
-	        }
-			console.dir('======================')
-	        
-	    } else { //배열이 없을 경우
-	        console.log("파일 갯수 : 1 ");
-	    	originalname = files[index].originalname;
-	    	filename = files[index].name;
-	    	mimetype = files[index].mimetype;
-			size = files[index].size;
-			console.dir('업로드 파일 정보')
-			console.dir(req.files[index]);
-			console.log('현재 파일 정보 : ' + originalname + ', ' + filename + ', '
-			+ mimetype + ', ' + size);
-			console.dir('======================')
-	    }
-		
+			if (Array.isArray(files)) {   // 배열에 들어가 있는 경우 (설정에서 1개의 파일도 배열에 넣게 했음)
+						console.log("배열에 들어있는 파일 갯수 : %d", files.length);
+						
+						for (var index = 0; index < files.length; index++) {
+							console.dir('#===== 업로드된 '+ (index+1) +' 번째 파일 정보 =====#')
+							originalname = files[index].originalname;
+							filename = files[index].filename;
+							mimetype = files[index].mimetype;
+							size = files[index].size;
+							console.log('현재 파일 정보 : ' + originalname + ', ' + filename + ', '
+							+ mimetype + ', ' + size);
+					
+							// 클라이언트에 응답 전송
+							res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+							res.write('<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">');
+							res.write('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">');
+							res.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>');
+							res.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>');
+							res.write('<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>');
+							res.write('<div class="container"><br><h2>파일업로드 성공</h2>');
+							res.write('<hr>');
+							res.write( '<h3> '+(index+1)+' 번째 파일 업로드 성공</h3>');
+							res.write('<hr/>');
+							res.write('<p>원본 파일명 : ' + originalname + '<br> -> 저장 파일명 : ' + filename + '</p>');
+							res.write('<p>MIME TYPE : ' + mimetype + '</p>');
+							res.write('<p>파일 크기 : ' + size + '</p>');
+							res.write('<a href=/ class="btn btn-primary btn-sm" value= "Home">홈 화면으로 이동</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+							res.end();
+						}
 
-		
-		res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
-		res.write('<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">');
-		res.write('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">');
-		res.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>');
-		res.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>');
-		res.write('<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>');
-		res.write('<div class="container"><br><h2>파일업로드 성공</h2>');
-		res.write('<hr>');
-		res.write('<a href=/ class="btn btn-primary btn-sm" value= "Home">홈 화면으로 이동</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
-		res.write('<a href=/photo.html class="btn btn-primary btn-sm">또 다른 파일 올리기</a></div>');	
-		res.end();
-		
+			}
 	} catch(err) {
 		console.dir(err.stack);
 	}	
-		
 });
-
-
+ 
 app.use('/', router);
 
 
-// 404 에러 페이지
+// 404 에러 페이지 처리
 var errorHandler = expressErrorHandler({
     static: {
       '404': './public/404.html'
@@ -174,7 +162,10 @@ var errorHandler = expressErrorHandler({
 app.use( expressErrorHandler.httpError(404) );
 app.use( errorHandler );
 
+
 // Express 서버 시작
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
+
+
