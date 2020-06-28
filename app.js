@@ -115,7 +115,13 @@ router.route('/process/photo').post(upload.array('photo', 10), function(req, res
 		
 			if (Array.isArray(files)) {   // 배열에 들어가 있는 경우 (설정에서 1개의 파일도 배열에 넣게 했음)
 						console.log("배열에 들어있는 파일 갯수 : %d", files.length);
-						
+						res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+						res.write('<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">');
+						res.write('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">');
+						res.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>');
+						res.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>');
+						res.write('<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>');
+						res.write('<div class="container"><br><h2>파일업로드 성공</h2>');
 						for (var index = 0; index < files.length; index++) {
 							console.dir('#===== 업로드된 '+ (index+1) +' 번째 파일 정보 =====#')
 							originalname = files[index].originalname;
@@ -126,12 +132,6 @@ router.route('/process/photo').post(upload.array('photo', 10), function(req, res
 							+ mimetype + ', ' + size);
 					
 							// 클라이언트에 응답 전송
-							res.write('<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">');
-							res.write('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">');
-							res.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>');
-							res.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>');
-							res.write('<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>');
-							res.write('<div class="container"><br><h2>파일업로드 성공</h2>');
 							res.write('<hr>');
 							res.write( '<h3> '+(index+1)+' 번째 파일 업로드 성공</h3>');
 							res.write('<hr/>');
