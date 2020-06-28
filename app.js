@@ -1,3 +1,4 @@
+
 // Express 기본 모듈 불러오기
 var express = require('express')
   , http = require('http')
@@ -36,8 +37,11 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 // public 폴더와 uploads 폴더 오픈
+// app.use('/public', static(path.join(__dirname, 'public')));
+// app.use('/uploads', static(path.join(__dirname, 'uploads')));
 app.use('/', static(path.join(__dirname, 'public')));
-app.use('/uploads', static(path.join(__dirname, 'uploads')));
+app.use('/', static(path.join(__dirname, 'uploads')));
+
 
 // cookie-parser 설정
 app.use(cookieParser());
@@ -58,7 +62,7 @@ app.use(cors());
 // 파일 제한 : 10개, 1G
 var storage = multer.diskStorage({
     destination: function (req, file, callback) {
-        callback(null, 'uploads/')
+        callback(null, 'uploads')
     },
     filename: function (req, file, callback) {
         /*callback(null, file.originalname + Date.now())*/
@@ -77,24 +81,18 @@ var upload = multer({
 	}
 });
 
-
 // 라우터 사용하여 라우팅 함수 등록
 var router = express.Router();
 
-//로그인 함수
-router.route('/process/login').post(function(req, res) {
-	console.log('/process/login 호출');
+router.route('/process/login2').post(function(req, res) {
+	console.log('/process/login 호출됨.');
+	// 클라이언트에 응답 전송
 	res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
 	res.write('<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">');
-	res.write('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">');
-	res.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>');
-	res.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>');
-	res.write('<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>');
-	res.write('<div class="container"><h2>로그인 성공</h2>');
-	res.write('<hr>');
-	res.write('<h4>업로드하는 사진이 있으면 페이지 이동!!!</h4>');
-	res.write('<a href=/ class="btn btn-primary btn-sm" value= "Home">홈 화면으로 이동</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
-	res.write('<a href=/photo.html class="btn btn-primary btn-sm">파일업로드 페이지로 이동</a></div>');				
+	res.write('<br><br>&nbsp;&nbsp;<font size =5 color =gray>로그인 성공</font><br><br>');
+	res.write('<hr/>');
+	res.write('<br>&nbsp;&nbsp<font color =gray size=3>업로드하는 사진이 있으면 페이지 이동!!!</font></p>');
+	res.write('&nbsp;&nbsp;<a href = /photo.html><input type= button value= "파일업로드 페이지로 이동"> </input></a>');				
 	res.end();
 });
 
@@ -137,7 +135,8 @@ router.route('/process/photo').post(upload.array('photo', 10), function(req, res
 		console.dir(err.stack);
 	}	
 });
- 
+
+
 app.use('/', router);
 
 
@@ -151,8 +150,9 @@ var errorHandler = expressErrorHandler({
 app.use( expressErrorHandler.httpError(404) );
 app.use( errorHandler );
 
-
 // Express 서버 시작
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
+
+
