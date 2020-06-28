@@ -1,3 +1,13 @@
+/**
+ * 파일 업로드하기
+ * 
+ * 웹브라우저에서 아래 주소의 페이지를 열고 웹페이지에서 요청
+ *    http://localhost:3000/public/photo.html
+ *
+ * 파일업로드를 위해 클라이언트에서 지정한 이름은 photo 입니다.
+ *
+ */
+
 // Express 기본 모듈 불러오기
 var express = require('express')
   , http = require('http')
@@ -36,8 +46,6 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 // public 폴더와 uploads 폴더 오픈
-// app.use('/public', static(path.join(__dirname, 'public')));
-// app.use('/uploads', static(path.join(__dirname, 'uploads')));
 app.use('/', static(path.join(__dirname, 'public')));
 app.use('/', static(path.join(__dirname, 'uploads')));
 
@@ -115,13 +123,7 @@ router.route('/process/photo').post(upload.array('photo', 10), function(req, res
 		
 			if (Array.isArray(files)) {   // 배열에 들어가 있는 경우 (설정에서 1개의 파일도 배열에 넣게 했음)
 						console.log("배열에 들어있는 파일 갯수 : %d", files.length);
-						res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
-						res.write('<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">');
-						res.write('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">');
-						res.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>');
-						res.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>');
-						res.write('<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>');
-						res.write('<div class="container"><br><h2>파일업로드 성공</h2>');
+						
 						for (var index = 0; index < files.length; index++) {
 							console.dir('#===== 업로드된 '+ (index+1) +' 번째 파일 정보 =====#')
 							originalname = files[index].originalname;
@@ -132,16 +134,14 @@ router.route('/process/photo').post(upload.array('photo', 10), function(req, res
 							+ mimetype + ', ' + size);
 					
 							// 클라이언트에 응답 전송
-							res.write('<hr>');
 							res.write( '<h3> '+(index+1)+' 번째 파일 업로드 성공</h3>');
 							res.write('<hr/>');
 							res.write('<p>원본 파일명 : ' + originalname + '<br> -> 저장 파일명 : ' + filename + '</p>');
 							res.write('<p>MIME TYPE : ' + mimetype + '</p>');
 							res.write('<p>파일 크기 : ' + size + '</p>');
+							res.write('<a href=/ value= "Home">홈 화면으로 이동</a>');
+							res.end();
 						}
-						res.write('<a href=/ class="btn btn-primary btn-sm" value= "Home">홈 화면으로 이동</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
-						res.write('</dir>');
-						res.end();
 
 			}
 	} catch(err) {
