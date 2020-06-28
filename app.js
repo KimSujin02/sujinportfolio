@@ -85,7 +85,7 @@ var upload = multer({
 var router = express.Router();
 
 router.route('/process/login2').post(function(req, res) {
-	console.log('/process/login 호출됨.');
+	console.log('/process/login2 호출됨.');
 	// 클라이언트에 응답 전송
 	res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
 	res.write('<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">');
