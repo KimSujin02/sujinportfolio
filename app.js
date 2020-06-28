@@ -1,13 +1,3 @@
-/**
- * 파일 업로드하기
- * 
- * 웹브라우저에서 아래 주소의 페이지를 열고 웹페이지에서 요청
- *    http://localhost:3000/public/photo.html
- *
- * 파일업로드를 위해 클라이언트에서 지정한 이름은 photo 입니다.
- *
- */
-
 // Express 기본 모듈 불러오기
 var express = require('express')
   , http = require('http')
@@ -47,7 +37,7 @@ app.use(bodyParser.json())
 
 // public 폴더와 uploads 폴더 오픈
 app.use('/', static(path.join(__dirname, 'public')));
-app.use('/', static(path.join(__dirname, 'uploads')));
+app.use('/uploads', static(path.join(__dirname, 'uploads')));
 
 // cookie-parser 설정
 app.use(cookieParser());
@@ -139,7 +129,6 @@ router.route('/process/photo').post(upload.array('photo', 10), function(req, res
 							res.write('<p>원본 파일명 : ' + originalname + '<br> -> 저장 파일명 : ' + filename + '</p>');
 							res.write('<p>MIME TYPE : ' + mimetype + '</p>');
 							res.write('<p>파일 크기 : ' + size + '</p>');
-							res.write('<a href=/ value= "Home">홈 화면으로 이동</a>');
 							res.end();
 						}
 
@@ -167,5 +156,3 @@ app.use( errorHandler );
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
-
-
